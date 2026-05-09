@@ -1,0 +1,259 @@
+/* home */
+body {
+    justify-content: center;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+    background-color: #1C1C1C;
+    color: #E3E3E3;
+}
+
+button:hover {
+    opacity: 50%;
+    cursor: pointer;
+    color: #E3E3E3;
+}
+
+.home {
+    display: flex;
+    flex-direction: row;
+}
+
+.speaking {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    width: 65%;
+    height: 100vh;
+}
+
+.transcription {
+    width: 35%;
+    height: 100vh;
+    border-left-width: 2px;
+    border-left-color: #E3E3E3;
+    border-left-style: solid;
+}
+
+.home_heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 25px ;
+    align-items: center;
+}
+
+.home_heading > h1 {
+    font-size: 48px;
+}
+
+.home_heading > img {
+    height: 50px;
+    width: 50px;
+}
+
+.home_heading > img:hover{
+    opacity: 50%;
+    cursor: pointer;
+}
+
+.transcription_heading {
+    padding-left: 10px;
+}
+
+.transcription_heading > h1 {
+    font-size: 24px;
+}
+
+.transcription_content {
+    padding-left: 15px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.incoming_speech {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+}
+
+.incoming_speech > button {
+    color: none;
+    font-family: monospace;
+    border: none;
+    background: none;
+    width: fit-content;
+    align-self: flex-end;
+    padding-right: 5%;
+    margin-top: 5px;
+    font-size: 16px;
+    color: #E3E3E3;
+}
+
+.incoming_speech > textarea {
+    resize: none;
+    width: 90%;
+    height: 100%;
+    padding: 5px;
+}
+
+.control_session {
+    background: none;
+    border: none;
+    width: fit-content;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 16px;
+    align-self: center;
+    color: #E3E3E3;
+}
+
+.home_speaking_indication{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1vh;
+    height: 25vh;
+}
+
+.bar {
+    width: 15px;
+    height: 5px;
+    border-radius: 20px 20px 20px 20px;
+    margin: 0px 5px 10px;
+    background: #E3E3E3;
+    display: inline-block;
+}
+
+.bar_speaking {
+    width: 15px;
+    height: 50px;
+    border-radius: 20px 20px 20px 20px;
+    margin: 0px 5px 10px;
+    background: #E3E3E3;
+    display: inline-block;
+    animation: loading 3s linear infinite;
+}
+
+.bar1 {
+    animation-delay: 0.01s;
+}
+
+.bar2 {
+    animation-delay: 0.2s;
+}
+
+.bar3 {
+    animation-delay: 0.01s;
+}
+
+.bar4 {
+    animation-delay: 0.2s;
+}
+
+.bar5 {
+    animation-delay: 0.01s;
+}
+
+.bar6 {
+    animation-delay: 0.2s;
+}
+
+.bar7 {
+    animation-delay: 0.01s;
+}
+
+@keyframes loading {
+    0% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(-1);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+/* evaluation */
+.results {
+    display: flex;
+    flex-direction: row;
+}
+
+.sdg_eval {
+    width: 35%;
+    height: 80vh;
+    border: 2px #E3E3E3 solid;
+    margin: 0px 5px;
+}
+
+.sdg_heading {
+    padding-left: 10px;
+}
+
+.sdg_heading > h1 {
+    font-size: 24px;
+}
+
+.sdg_response {
+    padding-left: 15px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.investment_eval {
+    width: 35%;
+    height: 80vh;
+    border: 2px #E3E3E3 solid;
+    margin: 0px 5px;
+}
+
+.investment_heading {
+    padding-left: 10px;
+}
+
+.investment_heading > h1 {
+    font-size: 24px;
+}
+
+.investment_response {
+    padding-left: 15px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.evaluation_next_steps {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    padding-left: 15px;
+}
+
+.evaluation_next_steps > button {
+    background: none;
+    color: #E3E3E3;
+    border: none;
+    font-size: 24px;
+    font-family: monospace;
+    font-weight: bold;
+    margin: 5px 0px;
+}
