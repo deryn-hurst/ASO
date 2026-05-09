@@ -7,19 +7,40 @@ recognition.lang = 'en-US';
 recognition.continuous = true;
 recognition.maxAlternatives = 1;
 
-if(document.title === "ASO - Your All In One Startup Coach"){
+let featherless_secret;
+
+function getKeys(){
     let xhr = new XMLHttpRequest();
-    let url = 'http://127.0.0.1:5000/connection_test'
+    let url = 'http://127.0.0.1:5000/get_featherless_private';
     xhr.open("GET", url, true);
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
+            featherless_secret = this.responseText;
         }
     }
 
     xhr.send();
+}
 
+function getAgentResponse(user_input){
+    let xhr = new XMLHttpRequest();
+    let url = 'http://127.0.0.1:5000/get_response';
+    xhr.open("POST", url, true);
+
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        if(this.readyState == 4 && this.status == 200){
+            document.getElementById("content").innerHTML += "<br><b>agent</b>: " + this.responseText + "<br>";
+        }
+    }
+    xhr.send(JSON.stringify({input: user_input}));
+    
+}
+
+getKeys();
+
+if(document.title === "ASO - Your All In One Startup Coach"){
     if(sessionStorage.getItem("prev_location") === "evaluation"){
         document.getElementById("content").innerHTML = sessionStorage.getItem("transcript");
     }
@@ -48,7 +69,9 @@ if(document.title === "ASO - Your All In One Startup Coach"){
 
             document.getElementById("confirm_speech").addEventListener("click", function () {
                 document.getElementById("content").innerHTML += "<br><b>user</b>: " + document.getElementById("current_speech").innerHTML + "<br>";
+                getAgentResponse(document.getElementById("current_speech").innerHTML);
                 document.getElementById("current_speech").innerHTML = "";
+                recognition.start();
             });
         }
 
@@ -63,6 +86,7 @@ if(document.title === "ASO - Your All In One Startup Coach"){
 }
 
 if(document.title === "ASO - Startup Evaluation"){
+    console.log(featherless_secret);
     document.getElementById("download_transcript").addEventListener('click', function () {
         // pull and clean transcript
         let transcript = sessionStorage.getItem("transcript");
