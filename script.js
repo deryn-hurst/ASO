@@ -8,15 +8,28 @@ recognition.continuous = true;
 recognition.maxAlternatives = 1;
 
 if(document.title === "ASO - Your All In One Startup Coach"){
+    let xhr = new XMLHttpRequest();
+    let url = 'http://127.0.0.1:5000/connection_test'
+    xhr.open("GET", url, true);
+
+    xhr.onreadystatechange = function () {
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+        }
+    }
+
+    xhr.send();
+
+    if(sessionStorage.getItem("prev_location") === "evaluation"){
+        document.getElementById("content").innerHTML = sessionStorage.getItem("transcript");
+    }
+
     document.getElementById("control_session").addEventListener("click", function () {
         if(document.getElementById("control_session").innerHTML === "stop session"){
             document.getElementById("control_session").innerHTML = "start session";
             recognition.stop();
             // pull and clean transcript
-            let transcript = document.getElementById("content").innerHTML;
-            transcript = transcript.replaceAll("<br>", "");
-            transcript = transcript.replaceAll("<b>", "");
-            transcript = transcript.replaceAll("</b>", "");
+            const transcript = document.getElementById("content").innerHTML;
             sessionStorage.setItem('transcript', transcript);
             location.href = "evaluation.html";
         }
@@ -51,7 +64,13 @@ if(document.title === "ASO - Your All In One Startup Coach"){
 
 if(document.title === "ASO - Startup Evaluation"){
     document.getElementById("download_transcript").addEventListener('click', function () {
-        const blob = new Blob([sessionStorage.getItem('transcript')], {type: 'text/plain'});
+        // pull and clean transcript
+        let transcript = sessionStorage.getItem("transcript");
+        transcript = transcript.replaceAll("<br>", "\n");
+        transcript = transcript.replaceAll("<b>", "");
+        transcript = transcript.replaceAll("</b>", "");
+
+        const blob = new Blob([transcript], {type: 'text/plain'});
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         
@@ -64,5 +83,10 @@ if(document.title === "ASO - Startup Evaluation"){
 
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("reenter_session").addEventListener("click", function () {
+        sessionStorage.setItem("prev_location", "evaluation");
+        location.href="home.html";
     });
 }
