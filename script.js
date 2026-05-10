@@ -9,7 +9,7 @@ recognition.maxAlternatives = 1;
 
 function getAgentResponse(user_input){
     let xhr = new XMLHttpRequest();
-    let url = 'https://deryn-hurst.github.io/ASO/get_response';
+    let url = '/ASO/get_response';
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader('Content-type', 'application/json');
@@ -24,7 +24,7 @@ function getAgentResponse(user_input){
 
 function getSDGEvaluation(transcript){
     let xhr = new XMLHttpRequest();
-    let url = 'https://deryn-hurst.github.io/ASO/evaluate_by_sdg';
+    let url = '/evaluate_by_sdg';
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader('Content-type', 'application/json');
@@ -40,7 +40,7 @@ function getSDGEvaluation(transcript){
 
 function getInvestmentEvaluation(transcript){
     let xhr = new XMLHttpRequest();
-    let url = 'https://deryn-hurst.github.io/ASO/evaluate_by_investment';
+    let url = '/evaluate_by_investment';
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader('Content-type', 'application/json');
