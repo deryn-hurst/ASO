@@ -103,7 +103,7 @@ Create a `.env` file in the root directory and initialize with your Featherless 
 python server.py
 ```
 
-**4. Run home.html in live server**
+**4. Run index.html in live server**
 * Once running, you may begin by clicking start session and enabling microphone access
 * To close session, click end stop session
 * Response turnaround time for conversation is 5-10 seconds
