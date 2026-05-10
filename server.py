@@ -35,20 +35,59 @@ client = OpenAI(
 def get_response():
     input = request.json
     input = input.get('input')
-    print(input)
     response = client.chat.completions.create(
        model = "ibm-granite/granite-7b-instruct",
        max_tokens = 350,
        messages=[
-           {"role": "system", "content": "You are helping a founder plan their startup based on the United Nations Sustainable Development Goals"},
+           {"role": "system", "content": "You are helping a founder plan their startup based on the United Nations Sustainable Development Goals. Only speak about the idea in relation to its alginment with the United Nations Sustainable Development Goals."},
            {"role": "user", "content": input}
        ],
     )
 
-    print(response.choices[0].message.content)
     return response.choices[0].message.content
 
-#app.add_url_rule('/get_response/<input>', 'get_response', get_response)
+# use same model with different instructions to evaluate idea
+@app.route('/evaluate_by_sdg', methods=["POST"])
+@cross_origin()
+def get_sdg_eval():
+    input = request.json
+    input = input.get('input')
+
+    input = input.replace("<br>", "")
+    input = input.replace("<b>", "")
+    input = input.replace("</b>", "")
+
+    response = client.chat.completions.create(
+       model = "ibm-granite/granite-7b-instruct",
+       max_tokens = 500,
+       messages=[
+           {"role": "system", "content": "You are helping a founder plan their startup based on the United Nations Sustainable Development Goals. Use the provided transcript to score the idea's alignment with each United Nations Sustainable Development Goals on a scale from 1-10. Only output each of the 17 UN sustainable development goals, its score, and a maximum 50 word explanation of why it got that score."},
+           {"role": "user", "content": input}
+       ],
+    )
+
+    return response.choices[0].message.content
+
+@app.route('/evaluate_by_investment', methods=["POST"])
+@cross_origin()
+def get_investment_eval():
+    input = request.json
+    input = input.get('input')
+
+    input = input.replace("<br>", "")
+    input = input.replace("<b>", "")
+    input = input.replace("</b>", "")
+
+    response = client.chat.completions.create(
+       model = "ibm-granite/granite-7b-instruct",
+       max_tokens = 350,
+       messages=[
+           {"role": "system", "content": "You are helping a founder plan their startup. Use the provided transcript to provide information about the market fit, return on interest, and success potential for the idea."},
+           {"role": "user", "content": input}
+       ],
+    )
+
+    return response.choices[0].message.content
 
 if __name__ == "__main__":
     app.run(debug=True)

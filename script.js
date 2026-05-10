@@ -7,22 +7,6 @@ recognition.lang = 'en-US';
 recognition.continuous = true;
 recognition.maxAlternatives = 1;
 
-let featherless_secret;
-
-function getKeys(){
-    let xhr = new XMLHttpRequest();
-    let url = 'http://127.0.0.1:5000/get_featherless_private';
-    xhr.open("GET", url, true);
-
-    xhr.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200){
-            featherless_secret = this.responseText;
-        }
-    }
-
-    xhr.send();
-}
-
 function getAgentResponse(user_input){
     let xhr = new XMLHttpRequest();
     let url = 'http://127.0.0.1:5000/get_response';
@@ -32,13 +16,43 @@ function getAgentResponse(user_input){
     xhr.onload = function() {
         if(this.readyState == 4 && this.status == 200){
             document.getElementById("content").innerHTML += "<br><b>agent</b>: " + this.responseText + "<br>";
+            recognition.start();
         }
     }
-    xhr.send(JSON.stringify({input: user_input}));
+    xhr.send(JSON.stringify({input: user_input})); 
+}
+
+function getSDGEvaluation(transcript){
+    let xhr = new XMLHttpRequest();
+    let url = 'http://127.0.0.1:5000/evaluate_by_sdg';
+    xhr.open("POST", url, true);
+
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        if(this.readyState == 4 && this.status == 200){
+            sessionStorage.setItem("sdg_evaluation", this.responseText);
+            getInvestmentEvaluation(transcript);
+        }
+    }
+    xhr.send(JSON.stringify({input: transcript}));
     
 }
 
-getKeys();
+function getInvestmentEvaluation(transcript){
+    let xhr = new XMLHttpRequest();
+    let url = 'http://127.0.0.1:5000/evaluate_by_investment';
+    xhr.open("POST", url, true);
+
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        if(this.readyState == 4 && this.status == 200){
+            sessionStorage.setItem("investment_evaluation", this.responseText);
+            location.href="evaluation.html";
+        }
+    }
+    xhr.send(JSON.stringify({input: transcript}));
+    
+}
 
 if(document.title === "ASO - Your All In One Startup Coach"){
     if(sessionStorage.getItem("prev_location") === "evaluation"){
@@ -49,10 +63,11 @@ if(document.title === "ASO - Your All In One Startup Coach"){
         if(document.getElementById("control_session").innerHTML === "stop session"){
             document.getElementById("control_session").innerHTML = "start session";
             recognition.stop();
-            // pull and clean transcript
+            // pull transcript
             const transcript = document.getElementById("content").innerHTML;
             sessionStorage.setItem('transcript', transcript);
-            location.href = "evaluation.html";
+            // generate reports
+            getSDGEvaluation(transcript);
         }
         else {
             document.getElementById("control_session").innerHTML = "stop session";
@@ -68,10 +83,10 @@ if(document.title === "ASO - Your All In One Startup Coach"){
             }
 
             document.getElementById("confirm_speech").addEventListener("click", function () {
+                recognition.stop();
                 document.getElementById("content").innerHTML += "<br><b>user</b>: " + document.getElementById("current_speech").innerHTML + "<br>";
                 getAgentResponse(document.getElementById("current_speech").innerHTML);
                 document.getElementById("current_speech").innerHTML = "";
-                recognition.start();
             });
         }
 
@@ -86,7 +101,10 @@ if(document.title === "ASO - Your All In One Startup Coach"){
 }
 
 if(document.title === "ASO - Startup Evaluation"){
-    console.log(featherless_secret);
+    document.getElementById("sdg").innerHTML = sessionStorage.getItem("sdg_evaluation");
+
+    document.getElementById("investment").innerHTML = sessionStorage.getItem("investment_evaluation");
+
     document.getElementById("download_transcript").addEventListener('click', function () {
         // pull and clean transcript
         let transcript = sessionStorage.getItem("transcript");
@@ -101,6 +119,26 @@ if(document.title === "ASO - Startup Evaluation"){
         link.style.display = 'none';
         link.href = url;
         link.download = "session_transcript.txt";
+
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("download_notes").addEventListener('click', function () {
+        // pull results
+        const sdg_response = sessionStorage.getItem("sdg_evaluation");
+        const investment_response = sessionStorage.getItem("investment_evaluation");
+
+        const blob = new Blob(["SDG Evaluation:\n" + sdg_response + "\n\nInvestment Evaluation:\n" + investment_response], {type: 'text/plain'});
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        
+        link.style.display = 'none';
+        link.href = url;
+        link.download = "session_notes.txt";
 
         document.body.appendChild(link);
         link.click();
