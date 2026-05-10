@@ -9,7 +9,7 @@ recognition.maxAlternatives = 1;
 
 function getAgentResponse(user_input){
     let xhr = new XMLHttpRequest();
-    let url = 'http://127.0.0.1:5000/get_response';
+    let url = 'https://deryn-hurst.github.io/ASO//get_response';
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader('Content-type', 'application/json');
