@@ -80,7 +80,7 @@ def get_investment_eval():
 
     response = client.chat.completions.create(
        model = "ibm-granite/granite-7b-instruct",
-       max_tokens = 350,
+       max_tokens = 500,
        messages=[
            {"role": "system", "content": "You are helping a founder plan their startup. Use the provided transcript to provide information about the market fit, return on interest, and success potential for the idea."},
            {"role": "user", "content": input}
