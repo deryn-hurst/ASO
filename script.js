@@ -9,7 +9,7 @@ recognition.maxAlternatives = 1;
 
 function getAgentResponse(user_input){
     let xhr = new XMLHttpRequest();
-    let url = '/ASO/get_response';
+    let url = '/get_response';
     xhr.open("POST", url, true);
 
     xhr.setRequestHeader('Content-type', 'application/json');
