@@ -30,7 +30,7 @@ client = OpenAI(
     api_key = os.getenv("FEATHERLESS_SECRET"),
 )
 
-@app.route('/get_response', methods=["POST"])
+@app.route('/api/get_response', methods=["POST"])
 @cross_origin()
 def get_response():
     input = request.json
@@ -47,7 +47,7 @@ def get_response():
     return response.choices[0].message.content
 
 # use same model with different instructions to evaluate idea
-@app.route('/evaluate_by_sdg', methods=["POST"])
+@app.route('/api/evaluate_by_sdg', methods=["POST"])
 @cross_origin()
 def get_sdg_eval():
     input = request.json
@@ -68,7 +68,7 @@ def get_sdg_eval():
 
     return response.choices[0].message.content
 
-@app.route('/evaluate_by_investment', methods=["POST"])
+@app.route('/api/evaluate_by_investment', methods=["POST"])
 @cross_origin()
 def get_investment_eval():
     input = request.json
