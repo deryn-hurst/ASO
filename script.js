@@ -68,6 +68,7 @@ if(document.title === "ASO - Your All In One Startup Coach"){
             sessionStorage.setItem('transcript', transcript);
             // generate reports
             getSDGEvaluation(transcript);
+            location.href = "evaluation.html";
         }
         else {
             document.getElementById("control_session").innerHTML = "stop session";
