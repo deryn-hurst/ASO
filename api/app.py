@@ -9,9 +9,6 @@ from dotenv import load_dotenv, dotenv_values
 # load env variables
 load_dotenv()
 
-# import requests for featherless access
-import requests
-
 # import open ai for featherless access
 from openai import OpenAI
 
