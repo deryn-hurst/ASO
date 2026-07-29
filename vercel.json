@@ -3,6 +3,10 @@
     {
       "source": "/(.*)",
       "destination": "/app.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
